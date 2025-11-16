@@ -7,4 +7,4 @@ RUN chmod +x /entrypoint.sh
 
 # Use the entrypoint to ensure the model exists at container startup
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["serve"]
+CMD ["ollama", "serve"]
