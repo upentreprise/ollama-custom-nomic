@@ -14,4 +14,4 @@ RUN ollama serve & \
     ollama create custom-nomic -f /root/Modelfile
 
 # This is the *only* command that runs when your service starts
-CMD ["ollama", "serve"]
+CMD ["serve"]
