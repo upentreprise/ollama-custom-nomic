@@ -1,17 +1,10 @@
 # Start from the official ollama image
 FROM ollama/ollama
 
-# This command runs *once* during the build
-# 1. Start the server in the background
-# 2. WAIT 5 SECONDS for it to boot up (THIS IS THE FIX)
-# 3. Pull the base model
-# 4. Create the Modelfile with the 16-thread limit
-# 5. Create the new "custom-nomic" model from that file
-RUN ollama serve & \
-    sleep 5 && \
-    ollama pull nomic-embed-text && \
-    echo "FROM nomic-embed-text\nPARAMETER num_thread 16" > /root/Modelfile && \
-    ollama create custom-nomic -f /root/Modelfile
+# Add a small entrypoint script and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# This is the *only* command that runs when your service starts
+# Use the entrypoint to ensure the model exists at container startup
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["serve"]
